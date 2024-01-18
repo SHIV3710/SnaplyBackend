@@ -267,12 +267,14 @@ exports.deleteProfile = async (req, res) => {
 exports.MyProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate("posts");
+    console.log(req.user._id);
     res.status(200).json({
       success: true,
       message: "Your Profile",
       user,
     });
   } catch (error) {
+    console.log("error");
     res.status(500).json({
       success: false,
       message: error.message,
