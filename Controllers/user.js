@@ -34,14 +34,14 @@ exports.register = async (req, res) => {
       httpOnly: true,
     };
 
-    res.status(200).cookie("token", token, options).json({
+    return res.status(200).cookie("token", token, options).json({
       success: true,
       message: "User Registered Successfully",
       user,
       token,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -76,14 +76,14 @@ exports.login = async (req, res) => {
       httpOnly: false,
     };
 
-    res.status(200).cookie("token", token, options).json({
+    return res.status(200).cookie("token", token, options).json({
       success: true,
       message: "User logged in successfully",
       user,
       token,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
