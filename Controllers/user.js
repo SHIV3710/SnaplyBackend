@@ -39,6 +39,7 @@ exports.register = async (req, res) => {
       message: "User Registered Successfully",
       user,
       token,
+      options,
     });
   } catch (error) {
     return res.status(500).json({
@@ -267,7 +268,12 @@ exports.deleteProfile = async (req, res) => {
 exports.MyProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate("posts");
-    console.log(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Please Login",
+      });
+    }
     res.status(200).json({
       success: true,
       message: "Your Profile",
