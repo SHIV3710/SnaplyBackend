@@ -260,3 +260,27 @@ exports.deletecomment = async (req, res) => {
     });
   }
 };
+
+exports.getapost = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const post = await Post.findById(id).populate("owner likes comments.user");
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post Not Found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Post Found",
+      post,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};

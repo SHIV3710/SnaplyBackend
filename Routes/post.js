@@ -7,6 +7,7 @@ const {
   updateCaption,
   deletecomment,
   addComment,
+  getapost,
 } = require("../Controllers/post");
 const { isAuthenticated } = require("../middleware/auth");
 
@@ -21,6 +22,7 @@ router
   .put(isAuthenticated, updateCaption);
 
 router.route("/posts").get(isAuthenticated, postoffollowing);
+router.route("/getpost/:id").get(getapost);
 router
   .route("/post/comment/:id")
   .put(isAuthenticated, addComment)
