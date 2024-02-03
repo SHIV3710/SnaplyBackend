@@ -7,7 +7,6 @@ exports.createPost = async (req, res) => {
     const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
       folder: "posts",
     });
-    console.log(req.body.caption);
     const newPostData = {
       caption: req.body.caption,
       image: {
@@ -209,8 +208,6 @@ exports.deletecomment = async (req, res) => {
     const post = await Post.findById(req.params.id);
     const commentid = req.body;
 
-    // console.log(commentid, post, req.user._id);
-
     if (!post) {
       return res.status(404).json({
         success: false,
@@ -219,7 +216,6 @@ exports.deletecomment = async (req, res) => {
     }
 
     if (post.owner.toString() === req.user._id.toString()) {
-      // console.log("owner");
       if (req.body.commentid === undefined) {
         return res.status(200).json({
           success: false,
@@ -233,7 +229,6 @@ exports.deletecomment = async (req, res) => {
         }
       });
       await post.save();
-      console.log(post);
 
       return res.status(200).json({
         success: true,

@@ -7,6 +7,7 @@ const cloudinary = require("cloudinary");
 exports.register = async (req, res) => {
   try {
     const { name, email, password, image } = req.body;
+    console.log(name, email, password);
     let user = await User.findOne({ name, email, password });
 
     if (user) {
@@ -28,18 +29,12 @@ exports.register = async (req, res) => {
       },
     });
     const token = await user.generateToken();
-
-    const options = {
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-    };
-
-    return res.status(200).cookie("token", token, options).json({
+    console.log(user, token);
+    return res.status(200).json({
       success: true,
       message: "User Registered Successfully",
       user,
       token,
-      options,
     });
   } catch (error) {
     return res.status(500).json({
@@ -72,12 +67,7 @@ exports.login = async (req, res) => {
 
     const token = await user.generateToken();
 
-    const options = {
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-    };
-
-    return res.status(200).cookie("token", token, options).json({
+    return res.status(200).json({
       success: true,
       message: "User logged in successfully",
       user,
@@ -161,7 +151,7 @@ exports.updatePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
 
     if (!oldPassword || !newPassword) {
-      return res.status(403).json({
+      return res.status(404).json({
         success: false,
         message: "Please give old and new password",
       });
@@ -175,6 +165,7 @@ exports.updatePassword = async (req, res) => {
         message: "Incorrect Old Password",
       });
     }
+    console.log(oldPassword, newPassword);
 
     user.password = newPassword;
 
